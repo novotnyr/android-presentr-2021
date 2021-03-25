@@ -4,10 +4,14 @@ import android.os.Bundle
 import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.ListView
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import com.google.android.material.snackbar.Snackbar
 
 class MainActivity : AppCompatActivity() {
     private lateinit var userListViewAdapter: ArrayAdapter<User>
+
+    private val userViewModel: UserViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -19,5 +23,9 @@ class MainActivity : AppCompatActivity() {
         userListView.adapter = userListViewAdapter
     }
 
-    fun onFloatingActionButtonClick(view: View) {}
+    fun onFloatingActionButtonClick(view: View) {
+        userViewModel.login(User("johndoe"))
+        Snackbar.make(view, "Používateľ je v miestnosti!", Snackbar.LENGTH_SHORT)
+            .show()
+    }
 }
