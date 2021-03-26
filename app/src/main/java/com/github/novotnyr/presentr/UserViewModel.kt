@@ -4,8 +4,12 @@ import androidx.lifecycle.*
 import kotlinx.coroutines.launch
 
 class UserViewModel : ViewModel() {
-    val users = liveData {
-        emit(presentr.getUsers())
+    private val refreshTrigger = MutableLiveData<Boolean>()
+
+    val users = refreshTrigger.switchMap {
+        liveData {
+            emit(presentr.getUsers())
+        }
     }
 
     fun login(user: User) {
@@ -14,5 +18,7 @@ class UserViewModel : ViewModel() {
         }
     }
 
-
+    fun refresh() {
+        refreshTrigger.value = true
+    }
 }
