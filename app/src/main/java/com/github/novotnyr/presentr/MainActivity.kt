@@ -24,6 +24,7 @@ class MainActivity : AppCompatActivity() {
         val userListView: ListView = findViewById(R.id.userListView)
         userListView.adapter = userListViewAdapter
 
+        userViewModel.refresh()
         userViewModel.users.observe(this) {
             userListViewAdapter.clear()
             userListViewAdapter.addAll(it)
