@@ -1,6 +1,8 @@
 package com.github.novotnyr.presentr
 
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -14,6 +16,15 @@ class MainActivity : AppCompatActivity() {
     private lateinit var userListViewAdapter: ArrayAdapter<User>
 
     private val userViewModel: UserViewModel by viewModels()
+
+    private val periodicHandler = Handler(Looper.getMainLooper())
+
+    private val periodicRefreshTask = object : Runnable {
+        override fun run() {
+            userViewModel.refresh()
+            periodicHandler.postDelayed(this, 60*1000)
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,6 +40,7 @@ class MainActivity : AppCompatActivity() {
             userListViewAdapter.clear()
             userListViewAdapter.addAll(it)
         }
+        periodicHandler.postDelayed(periodicRefreshTask, 60*1000)
     }
 
     fun onFloatingActionButtonClick(view: View) {
@@ -50,5 +62,4 @@ class MainActivity : AppCompatActivity() {
             }
             else -> super.onOptionsItemSelected(item)
         }
-
 }
