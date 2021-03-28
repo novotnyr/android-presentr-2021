@@ -43,6 +43,16 @@ class MainActivity : AppCompatActivity() {
         periodicHandler.postDelayed(periodicRefreshTask, 60*1000)
     }
 
+    override fun onResume() {
+        super.onResume()
+        periodicHandler.postDelayed(periodicRefreshTask, 60*1000)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        periodicHandler.removeCallbacks(periodicRefreshTask)
+    }
+
     fun onFloatingActionButtonClick(view: View) {
         userViewModel.login(User("johndoe"))
         Snackbar.make(view, "Používateľ je v miestnosti!", Snackbar.LENGTH_SHORT)
